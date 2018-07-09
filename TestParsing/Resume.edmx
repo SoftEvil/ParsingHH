@@ -1,0 +1,379 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище DBParsingModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Language">
+          <Key>
+            <PropertyRef Name="LanguageID" />
+          </Key>
+          <Property Name="LanguageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Language" Type="nchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Resume">
+          <Key>
+            <PropertyRef Name="Hash" />
+          </Key>
+          <Property Name="Hash" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Salary" Type="int" Nullable="false" />
+          <Property Name="Gender" Type="nchar" MaxLength="10" />
+          <Property Name="Birthday" Type="date" />
+          <Property Name="Address" Type="nchar" MaxLength="50" />
+          <Property Name="Position" Type="nchar" MaxLength="100" />
+          <Property Name="Employment" Type="nchar" MaxLength="100" />
+          <Property Name="WorkTime" Type="nchar" MaxLength="100" />
+          <Property Name="Experience" Type="nchar" MaxLength="100" />
+          <Property Name="Info" Type="nchar" MaxLength="2000" />
+          <Property Name="Education" Type="nchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="ResumeLanguage">
+          <Key>
+            <PropertyRef Name="ResumeHash" />
+            <PropertyRef Name="LanguageID" />
+          </Key>
+          <Property Name="ResumeHash" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="LanguageID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ResumeSkills">
+          <Key>
+            <PropertyRef Name="ResumeHash" />
+            <PropertyRef Name="SkillID" />
+          </Key>
+          <Property Name="ResumeHash" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="SkillID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ResumeSpec">
+          <Key>
+            <PropertyRef Name="ResumeHash" />
+            <PropertyRef Name="SpecializationID" />
+          </Key>
+          <Property Name="ResumeHash" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="SpecializationID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Skills">
+          <Key>
+            <PropertyRef Name="SkillID" />
+          </Key>
+          <Property Name="SkillID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Skill" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Spec">
+          <Key>
+            <PropertyRef Name="SpecializationID" />
+          </Key>
+          <Property Name="SpecializationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Specialization" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_ResumeLanguage_Language">
+          <End Role="Language" Type="Self.Language" Multiplicity="1" />
+          <End Role="ResumeLanguage" Type="Self.ResumeLanguage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Language">
+              <PropertyRef Name="LanguageID" />
+            </Principal>
+            <Dependent Role="ResumeLanguage">
+              <PropertyRef Name="LanguageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResumeLanguage_Resume">
+          <End Role="Resume" Type="Self.Resume" Multiplicity="1" />
+          <End Role="ResumeLanguage" Type="Self.ResumeLanguage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resume">
+              <PropertyRef Name="Hash" />
+            </Principal>
+            <Dependent Role="ResumeLanguage">
+              <PropertyRef Name="ResumeHash" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResumeSkills_Resume">
+          <End Role="Resume" Type="Self.Resume" Multiplicity="1" />
+          <End Role="ResumeSkills" Type="Self.ResumeSkills" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resume">
+              <PropertyRef Name="Hash" />
+            </Principal>
+            <Dependent Role="ResumeSkills">
+              <PropertyRef Name="ResumeHash" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResumeSkills_Skills">
+          <End Role="Skills" Type="Self.Skills" Multiplicity="1" />
+          <End Role="ResumeSkills" Type="Self.ResumeSkills" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Skills">
+              <PropertyRef Name="SkillID" />
+            </Principal>
+            <Dependent Role="ResumeSkills">
+              <PropertyRef Name="SkillID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResumeSpec_Resume">
+          <End Role="Resume" Type="Self.Resume" Multiplicity="1" />
+          <End Role="ResumeSpec" Type="Self.ResumeSpec" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resume">
+              <PropertyRef Name="Hash" />
+            </Principal>
+            <Dependent Role="ResumeSpec">
+              <PropertyRef Name="ResumeHash" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResumeSpec_Spec">
+          <End Role="Spec" Type="Self.Spec" Multiplicity="1" />
+          <End Role="ResumeSpec" Type="Self.ResumeSpec" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Spec">
+              <PropertyRef Name="SpecializationID" />
+            </Principal>
+            <Dependent Role="ResumeSpec">
+              <PropertyRef Name="SpecializationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище DBParsingModelContainer">
+          <EntitySet Name="Language" EntityType="Self.Language" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Resume" EntityType="Self.Resume" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ResumeLanguage" EntityType="Self.ResumeLanguage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ResumeSkills" EntityType="Self.ResumeSkills" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ResumeSpec" EntityType="Self.ResumeSpec" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Skills" EntityType="Self.Skills" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Spec" EntityType="Self.Spec" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ResumeLanguage_Language" Association="Self.FK_ResumeLanguage_Language">
+            <End Role="Language" EntitySet="Language" />
+            <End Role="ResumeLanguage" EntitySet="ResumeLanguage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResumeLanguage_Resume" Association="Self.FK_ResumeLanguage_Resume">
+            <End Role="Resume" EntitySet="Resume" />
+            <End Role="ResumeLanguage" EntitySet="ResumeLanguage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResumeSkills_Resume" Association="Self.FK_ResumeSkills_Resume">
+            <End Role="Resume" EntitySet="Resume" />
+            <End Role="ResumeSkills" EntitySet="ResumeSkills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResumeSkills_Skills" Association="Self.FK_ResumeSkills_Skills">
+            <End Role="Skills" EntitySet="Skills" />
+            <End Role="ResumeSkills" EntitySet="ResumeSkills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResumeSpec_Resume" Association="Self.FK_ResumeSpec_Resume">
+            <End Role="Resume" EntitySet="Resume" />
+            <End Role="ResumeSpec" EntitySet="ResumeSpec" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResumeSpec_Spec" Association="Self.FK_ResumeSpec_Spec">
+            <End Role="Spec" EntitySet="Spec" />
+            <End Role="ResumeSpec" EntitySet="ResumeSpec" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DBParsingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Language">
+          <Key>
+            <PropertyRef Name="LanguageID" />
+          </Key>
+          <Property Name="LanguageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Language1" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Resume" Relationship="Self.ResumeLanguage" FromRole="Language" ToRole="Resume" />
+        </EntityType>
+        <EntityType Name="Resume">
+          <Key>
+            <PropertyRef Name="Hash" />
+          </Key>
+          <Property Name="Hash" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Salary" Type="Int32" Nullable="false" />
+          <Property Name="Gender" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Birthday" Type="DateTime" Precision="0" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Position" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Employment" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="WorkTime" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Experience" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Info" Type="String" MaxLength="2000" FixedLength="true" Unicode="true" />
+          <Property Name="Education" Type="String" MaxLength="500" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Language" Relationship="Self.ResumeLanguage" FromRole="Resume" ToRole="Language" />
+          <NavigationProperty Name="Skills" Relationship="Self.ResumeSkills" FromRole="Resume" ToRole="Skills" />
+          <NavigationProperty Name="Spec" Relationship="Self.ResumeSpec" FromRole="Resume" ToRole="Spec" />
+        </EntityType>
+        <EntityType Name="Skills">
+          <Key>
+            <PropertyRef Name="SkillID" />
+          </Key>
+          <Property Name="SkillID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Skill" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Resume" Relationship="Self.ResumeSkills" FromRole="Skills" ToRole="Resume" />
+        </EntityType>
+        <EntityType Name="Spec">
+          <Key>
+            <PropertyRef Name="SpecializationID" />
+          </Key>
+          <Property Name="SpecializationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Specialization" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Resume" Relationship="Self.ResumeSpec" FromRole="Spec" ToRole="Resume" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="ResumeLanguage">
+          <End Role="Language" Type="Self.Language" Multiplicity="*" />
+          <End Role="Resume" Type="Self.Resume" Multiplicity="*" />
+        </Association>
+        <Association Name="ResumeSkills">
+          <End Role="Resume" Type="Self.Resume" Multiplicity="*" />
+          <End Role="Skills" Type="Self.Skills" Multiplicity="*" />
+        </Association>
+        <Association Name="ResumeSpec">
+          <End Role="Resume" Type="Self.Resume" Multiplicity="*" />
+          <End Role="Spec" Type="Self.Spec" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="DBParsingEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Language" EntityType="Self.Language" />
+          <EntitySet Name="Resume" EntityType="Self.Resume" />
+          <EntitySet Name="Skills" EntityType="Self.Skills" />
+          <EntitySet Name="Spec" EntityType="Self.Spec" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="ResumeLanguage" Association="Self.ResumeLanguage">
+            <End Role="Language" EntitySet="Language" />
+            <End Role="Resume" EntitySet="Resume" />
+          </AssociationSet>
+          <AssociationSet Name="ResumeSkills" Association="Self.ResumeSkills">
+            <End Role="Resume" EntitySet="Resume" />
+            <End Role="Skills" EntitySet="Skills" />
+          </AssociationSet>
+          <AssociationSet Name="ResumeSpec" Association="Self.ResumeSpec">
+            <End Role="Resume" EntitySet="Resume" />
+            <End Role="Spec" EntitySet="Spec" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище DBParsingModelContainer" CdmEntityContainer="DBParsingEntities1">
+          <EntitySetMapping Name="Language">
+            <EntityTypeMapping TypeName="DBParsingModel.Language">
+              <MappingFragment StoreEntitySet="Language">
+                <ScalarProperty Name="LanguageID" ColumnName="LanguageID" />
+                <ScalarProperty Name="Language1" ColumnName="Language" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Resume">
+            <EntityTypeMapping TypeName="DBParsingModel.Resume">
+              <MappingFragment StoreEntitySet="Resume">
+                <ScalarProperty Name="Hash" ColumnName="Hash" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Employment" ColumnName="Employment" />
+                <ScalarProperty Name="WorkTime" ColumnName="WorkTime" />
+                <ScalarProperty Name="Experience" ColumnName="Experience" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="Education" ColumnName="Education" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Skills">
+            <EntityTypeMapping TypeName="DBParsingModel.Skills">
+              <MappingFragment StoreEntitySet="Skills">
+                <ScalarProperty Name="SkillID" ColumnName="SkillID" />
+                <ScalarProperty Name="Skill" ColumnName="Skill" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Spec">
+            <EntityTypeMapping TypeName="DBParsingModel.Spec">
+              <MappingFragment StoreEntitySet="Spec">
+                <ScalarProperty Name="SpecializationID" ColumnName="SpecializationID" />
+                <ScalarProperty Name="Specialization" ColumnName="Specialization" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="DBParsingModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ResumeLanguage" TypeName="DBParsingModel.ResumeLanguage" StoreEntitySet="ResumeLanguage">
+            <EndProperty Name="Language">
+              <ScalarProperty Name="LanguageID" ColumnName="LanguageID" />
+            </EndProperty>
+            <EndProperty Name="Resume">
+              <ScalarProperty Name="Hash" ColumnName="ResumeHash" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ResumeSkills" TypeName="DBParsingModel.ResumeSkills" StoreEntitySet="ResumeSkills">
+            <EndProperty Name="Resume">
+              <ScalarProperty Name="Hash" ColumnName="ResumeHash" />
+            </EndProperty>
+            <EndProperty Name="Skills">
+              <ScalarProperty Name="SkillID" ColumnName="SkillID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ResumeSpec" TypeName="DBParsingModel.ResumeSpec" StoreEntitySet="ResumeSpec">
+            <EndProperty Name="Resume">
+              <ScalarProperty Name="Hash" ColumnName="ResumeHash" />
+            </EndProperty>
+            <EndProperty Name="Spec">
+              <ScalarProperty Name="SpecializationID" ColumnName="SpecializationID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
